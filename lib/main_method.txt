@@ -1,0 +1,65 @@
+def play_game(sampled_word,progress_directory_path)
+
+    wrong_letter=0
+
+    game1 = Game.new(sampled_word)
+    vector_linii = game1.add_lines(sampled_word)
+    print "Give name to the current game so i can save it as such for later:"
+    game_name=gets.chomp.to_s
+    puts
+
+
+    puts sampled_word
+
+    until vector_linii.join == sampled_word
+
+      puts
+      print "Introdu litera:"
+      introdu_litera = gets.chomp.to_s.downcase
+
+      puts "Save current progress!"
+      if introdu_litera=='save'
+        puts "AI salvat progresul curent! Numele jocului este:#{game_name}"
+
+        file_name="#{game_name}.txt"
+        file_path=File.join(progress_directory_path,file_name)
+        save_current_progress=Marshal.dump(game1)
+
+        File.open(file_path,'w') do |file|
+          file.write(save_current_progress)
+        end
+
+        break
+      end
+      index_replacement = 0
+
+      if game1.check_letter(sampled_word, introdu_litera)
+        index_replacement = game1.get_indexes(introdu_litera)
+
+        game1.replace_letter(index_replacement, vector_linii, introdu_litera)
+        puts
+
+      else
+        puts
+        puts "Litera gresita bossu!"
+
+        if wrong_letter < 6
+          wrong_letter += 1
+          game1.draw_shape(wrong_letter)
+        else
+          puts "Ai pierdut! Cuvantul era:#{sampled_word}"
+          break
+        end
+
+      end
+
+      puts vector_linii.join(" ")
+
+      if vector_linii.join == sampled_word.strip
+        puts "AI ghicit!"
+        break
+      end
+  end
+ end
+
+  play_game(sampled_word,progress_directory_path)

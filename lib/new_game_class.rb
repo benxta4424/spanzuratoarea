@@ -28,14 +28,13 @@ class Game
     found_index
   end
 
-  def replace_letter(index_repl,line_vector,replacement_letter)
+  def replace_letter(index_repl, line_vector, replacement_letter)
     index_repl.each do |item|
-      line_vector[item]=replacement_letter
+      line_vector[item] = replacement_letter
     end
   end
 
   def draw_shape(guess)
-    puts HANGMANPICS[guess] 
+    puts HANGMANPICS[guess]
   end
-
 end
