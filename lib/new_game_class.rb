@@ -1,23 +1,26 @@
 require "./hangman_draw"
 class Game
-  attr_accessor :word
+  attr_accessor :word, :line_vector
 
   def initialize(word)
-    self.word = word
+    @word = word
+    @line_vector = Array.new(word.length, "_")
+    @wrong_letters = []
+    @right_letters = []
+    @number_of_turns = 0
   end
 
-  def add_lines(words)
-    line_vector = []
-    length = words.length - 1
-
-    length.times do
-      line_vector.push("_")
-    end
-    line_vector
+  def add_lines
+    @line_vector
   end
 
   def check_letter(word, letter)
     word.include?(letter)
+  end
+
+  def incorrect_letters(word, letter)
+    @wrong_letters.push(letter) unless word.include?(letter)
+    @wrong_letters
   end
 
   def get_indexes(correct_letter)
@@ -36,5 +39,9 @@ class Game
 
   def draw_shape(guess)
     puts HANGMANPICS[guess]
+  end
+
+  def save_shape(_nr_of_turns)
+    @number_of_turns
   end
 end
